@@ -63,7 +63,7 @@ A modern, feature-rich weather application built with Next.js, TypeScript, and T
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/akifalbayrak/weather-application
    cd weather-app
    ```
 
@@ -80,9 +80,9 @@ A modern, feature-rich weather application built with Next.js, TypeScript, and T
 4. **Set up environment variables**
    ```bash
    # Copy the example environment file
-   cp env.example .env.local
+   cp env.example .env
    
-   # Edit .env.local and add your API key
+   # Edit .env and add your API key
    NEXT_PUBLIC_OPENWEATHER_API_KEY=your_actual_api_key_here
    ```
 

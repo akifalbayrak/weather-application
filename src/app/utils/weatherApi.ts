@@ -11,15 +11,16 @@ export class WeatherApiError extends Error {
 }
 
 export const weatherApi = {
+  
   /**
    * Get weather data by city name
    */
-  async getWeatherByCity(cityName: string): Promise<WeatherData> {
+  async getWeatherByCity(cityName: string, lang: string = 'en'): Promise<WeatherData> {
     if (!API_KEY) {
       throw new WeatherApiError('API key not found. Please add NEXT_PUBLIC_OPENWEATHER_API_KEY to your environment variables.');
     }
 
-    const url = `${API_BASE_URL}?q=${encodeURIComponent(cityName)}&appid=${API_KEY}&units=metric`;
+    const url = `${API_BASE_URL}?q=${encodeURIComponent(cityName)}&appid=${API_KEY}&units=metric&lang=${lang}`;
     
     const response = await fetch(url);
     
@@ -42,12 +43,12 @@ export const weatherApi = {
   /**
    * Get weather data by coordinates
    */
-  async getWeatherByCoords(lat: number, lon: number): Promise<WeatherData> {
+  async getWeatherByCoords(lat: number, lon: number, lang: string = 'en'): Promise<WeatherData> {
     if (!API_KEY) {
       throw new WeatherApiError('API key not found. Please add NEXT_PUBLIC_OPENWEATHER_API_KEY to your environment variables.');
     }
 
-    const url = `${API_BASE_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
+    const url = `${API_BASE_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=${lang}`;
     
     const response = await fetch(url);
     

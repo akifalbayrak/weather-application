@@ -81,7 +81,7 @@ export default function Home() {
     setError(null);
 
     try {
-      const data = await weatherApi.getWeatherByCoords(lat, lon);
+      const data = await weatherApi.getWeatherByCoords(lat, lon, language);
       setWeatherData(data);
       // Save location name to localStorage
       const locationName = `${data.name}, ${data.sys.country}`;
@@ -97,14 +97,14 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [t.unexpectedError, addToRecentSearches]);
+  }, [t.unexpectedError, addToRecentSearches, language]);
 
   const getWeatherByCity = useCallback(async (cityName: string) => {
     setLoading(true);
     setError(null);
 
     try {
-      const data = await weatherApi.getWeatherByCity(cityName);
+      const data = await weatherApi.getWeatherByCity(cityName, language);
       setWeatherData(data);
       // Save searched city to localStorage
       setLastSearchedLocation(cityName);
@@ -119,7 +119,7 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [t.unexpectedError, addToRecentSearches]);
+  }, [t.unexpectedError, addToRecentSearches, language]);
 
   const getCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
