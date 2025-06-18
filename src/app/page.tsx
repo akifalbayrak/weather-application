@@ -1,103 +1,194 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect, useCallback } from 'react';
+import WeatherDisplay from '@/app/components/WeatherDisplay';
+import SearchBar from '@/app/components/SearchBar';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
+import ErrorMessage from '@/app/components/ErrorMessage';
+import LanguageSelector from '@/app/components/LanguageSelector';
+import { weatherApi, WeatherApiError } from './utils/weatherApi';
+import { useLanguage } from './contexts/LanguageContext';
+
+export interface WeatherData {
+  coord: {
+    lon: number;
+    lat: number;
+  };
+  weather: Array<{
+    id: number;
+    main: string;
+    description: string;
+    icon: string;
+  }>;
+  main: {
+    temp: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
+    humidity: number;
+  };
+  visibility: number;
+  wind: {
+    speed: number;
+    deg: number;
+  };
+  clouds: {
+    all: number;
+  };
+  dt: number;
+  sys: {
+    country: string;
+    sunrise: number;
+    sunset: number;
+  };
+  timezone: number;
+  id: number;
+  name: string;
+  cod: number;
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [lastSearchedLocation, setLastSearchedLocation] = useState<string>('');
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const { t, language, setLanguage } = useLanguage();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // Function to add city to recent searches
+  const addToRecentSearches = useCallback((cityName: string) => {
+    const normalizedCityName = cityName.toLowerCase();
+    setRecentSearches(prev => {
+      const filtered = prev.filter(city => city.toLowerCase() !== normalizedCityName);
+      const updated = [cityName, ...filtered].slice(0, 3);
+      localStorage.setItem('weather-app-recent-searches', JSON.stringify(updated));
+      return updated;
+    });
+  }, []);
+
+  // Function to remove city from recent searches
+  const removeFromRecentSearches = useCallback((cityName: string) => {
+    setRecentSearches(prev => {
+      const updated = prev.filter(city => city !== cityName);
+      localStorage.setItem('weather-app-recent-searches', JSON.stringify(updated));
+      return updated;
+    });
+  }, []);
+
+  const getWeatherByCoords = useCallback(async (lat: number, lon: number) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await weatherApi.getWeatherByCoords(lat, lon);
+      setWeatherData(data);
+      // Save location name to localStorage
+      const locationName = `${data.name}, ${data.sys.country}`;
+      setLastSearchedLocation(locationName);
+      localStorage.setItem('weather-app-last-location', locationName);
+      addToRecentSearches(locationName);
+    } catch (err) {
+      if (err instanceof WeatherApiError) {
+        setError(err.message);
+      } else {
+        setError(t.unexpectedError);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [t.unexpectedError, addToRecentSearches]);
+
+  const getWeatherByCity = useCallback(async (cityName: string) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await weatherApi.getWeatherByCity(cityName);
+      setWeatherData(data);
+      // Save searched city to localStorage
+      setLastSearchedLocation(cityName);
+      localStorage.setItem('weather-app-last-location', cityName);
+      addToRecentSearches(cityName);
+    } catch (err) {
+      if (err instanceof WeatherApiError) {
+        setError(err.message);
+      } else {
+        setError(t.unexpectedError);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [t.unexpectedError, addToRecentSearches]);
+
+  const getCurrentLocation = useCallback(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          getWeatherByCoords(position.coords.latitude, position.coords.longitude);
+        },
+        () => {
+          setError(t.locationError);
+        }
+      );
+    } else {
+      setError(t.geolocationError);
+    }
+  }, [getWeatherByCoords, t.locationError, t.geolocationError]);
+
+  useEffect(() => {
+    // Load last searched location from localStorage
+    const savedLocation = localStorage.getItem('weather-app-last-location');
+    const savedRecentSearches = localStorage.getItem('weather-app-recent-searches');
+    
+    if (savedRecentSearches) {
+      try {
+        setRecentSearches(JSON.parse(savedRecentSearches));
+      } catch (error) {
+        console.error('Error parsing recent searches:', error);
+      }
+    }
+    
+    if (savedLocation) {
+      // Try to get weather for the saved location
+      getWeatherByCity(savedLocation);
+    } else {
+      // Fallback to default city if no saved location
+      getWeatherByCity('London');
+    }
+  }, [getWeatherByCity]);
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-purple-600 p-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <div className="text-center flex-1">
+            <h1 className="text-4xl font-bold text-white mb-2">{t.appTitle}</h1>
+            <p className="text-blue-100">{t.appSubtitle}</p>
+            {lastSearchedLocation && (
+              <p className="text-blue-200 text-sm mt-1">
+                {t.lastSearched}: {lastSearchedLocation}
+              </p>
+            )}
+          </div>
+          <LanguageSelector currentLanguage={language} onLanguageChange={setLanguage} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        <SearchBar onSearch={getWeatherByCity} onLocationClick={getCurrentLocation} />
+
+        {loading && <LoadingSpinner />}
+        
+        {error && <ErrorMessage message={error} />}
+        
+        {weatherData && !loading && (
+          <WeatherDisplay 
+            weatherData={weatherData} 
+            recentSearches={recentSearches}
+            onCityClick={getWeatherByCity}
+            onRemoveCity={removeFromRecentSearches}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        )}
+      </div>
+    </main>
   );
 }
