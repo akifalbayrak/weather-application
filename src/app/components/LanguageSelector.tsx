@@ -56,12 +56,12 @@ export default function LanguageSelector({ currentLanguage, onLanguageChange }: 
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 bg-white/10 backdrop-blur-md rounded-lg px-4 py-2 border border-white/20 text-white hover:bg-white/20 transition-colors"
+        className="flex items-center space-x-2 bg-white/10 backdrop-blur-md rounded-lg px-3 sm:px-4 py-2 border border-white/20 text-white hover:bg-white/20 transition-colors text-sm sm:text-base"
       >
-        <span className="text-lg">{currentLang.flag}</span>
+        <span className="text-base sm:text-lg">{currentLang.flag}</span>
         <span className="hidden sm:inline">{currentLang.name}</span>
         <svg
-          className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -71,7 +71,7 @@ export default function LanguageSelector({ currentLanguage, onLanguageChange }: 
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 shadow-lg z-50">
+        <div className="absolute right-0 mt-2 w-40 sm:w-48 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 shadow-lg z-50 max-h-60 overflow-y-auto">
           <div className="py-1">
             {languages.map((language) => (
               <button
@@ -80,12 +80,12 @@ export default function LanguageSelector({ currentLanguage, onLanguageChange }: 
                   onLanguageChange(language.code);
                   setIsOpen(false);
                 }}
-                className={`w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-white/20 transition-colors ${
+                className={`w-full flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 text-left hover:bg-white/20 transition-colors ${
                   currentLanguage === language.code ? 'bg-white/20' : ''
                 }`}
               >
-                <span className="text-lg">{language.flag}</span>
-                <span className="text-white">{language.name}</span>
+                <span className="text-base sm:text-lg">{language.flag}</span>
+                <span className="text-white text-sm sm:text-base">{language.name}</span>
               </button>
             ))}
           </div>
