@@ -2,7 +2,10 @@
 
 A modern, feature-rich weather application built with Next.js, TypeScript, and Tailwind CSS. Get real-time weather information for any location with multilingual support, smart search history, and beautiful UI.
 
-![Weather App Screenshot](https://github.com/user-attachments/assets/5fcf4992-886e-419d-b5f2-4ee6ca189d36)
+![weather-application-eight-steel vercel app_](https://github.com/user-attachments/assets/ac515581-1277-466c-8805-5af78bc57f46)
+![weather-application-eight-steel vercel app_ (1)](https://github.com/user-attachments/assets/d1c64ffd-827b-42ec-ab4d-988fbf88a2db)
+![weather-application-eight-steel vercel app_ (2)](https://github.com/user-attachments/assets/f7721342-df51-4ddc-b4f6-44ea1e886240)
+![weather-application-eight-steel vercel app_ (3)](https://github.com/user-attachments/assets/41dfd354-446d-4695-a79c-b05d1b333000)
 
 ## ✨ Features
 
