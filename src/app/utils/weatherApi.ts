@@ -15,7 +15,7 @@ export const weatherApi = {
   /**
    * Get weather data by city name
    */
-  async getWeatherByCity(cityName: string, lang: string = 'en'): Promise<WeatherData> {
+  async getWeatherByCity(cityName: string, lang: string): Promise<WeatherData> {
     if (!API_KEY) {
       throw new WeatherApiError('API key not found. Please add NEXT_PUBLIC_OPENWEATHER_API_KEY to your environment variables.');
     }
