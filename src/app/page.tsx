@@ -159,14 +159,14 @@ export default function Home() {
   }, [getWeatherByCity]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-purple-600 p-4">
+    <main className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-purple-600 p-2 sm:p-4">
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <div className="text-center flex-1">
-            <h1 className="text-4xl font-bold text-white mb-2">{t.appTitle}</h1>
-            <p className="text-blue-100">{t.appSubtitle}</p>
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 sm:mb-8 gap-4">
+          <div className="text-center sm:text-left flex-1">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">{t.appTitle}</h1>
+            <p className="text-blue-100 text-sm sm:text-base">{t.appSubtitle}</p>
             {lastSearchedLocation && (
-              <p className="text-blue-200 text-sm mt-1">
+              <p className="text-blue-200 text-xs sm:text-sm mt-1">
                 {t.lastSearched}: {lastSearchedLocation}
               </p>
             )}
