@@ -43,7 +43,7 @@ export const weatherApi = {
   /**
    * Get weather data by coordinates
    */
-  async getWeatherByCoords(lat: number, lon: number, lang: string = 'en'): Promise<WeatherData> {
+  async getWeatherByCoords(lat: number, lon: number, lang: string): Promise<WeatherData> {
     if (!API_KEY) {
       throw new WeatherApiError('API key not found. Please add NEXT_PUBLIC_OPENWEATHER_API_KEY to your environment variables.');
     }
