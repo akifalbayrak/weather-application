@@ -2,7 +2,7 @@
 
 A modern, feature-rich weather application built with Next.js, TypeScript, and Tailwind CSS. Get real-time weather information for any location with multilingual support, smart search history, and beautiful UI.
 
-![Weather App Screenshot](https://github.com/user-attachments/assets/877ccbdd-be0e-445f-b326-e395816ab40c)
+![Weather App Screenshot](https://github.com/user-attachments/assets/5fcf4992-886e-419d-b5f2-4ee6ca189d36)
 
 ## ✨ Features
 
