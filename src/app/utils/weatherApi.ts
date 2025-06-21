@@ -333,20 +333,31 @@ export const weatherApi = {
     },
 
     /**
-     * Get weather map tile URL
+     * Convert latitude and longitude to tile coordinates
      */
-    getWeatherMapTileUrl(
+    latLonToTile(lat: number, lon: number, zoom: number): { x: number; y: number } {
+        const n = Math.pow(2, zoom);
+        const x = Math.floor(((lon + 180) / 360) * n);
+        const y = Math.floor(((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2) * n);
+        return { x, y };
+    },
+
+    /**
+     * Get weather map tile URL from coordinates
+     */
+    getWeatherMapTileUrlFromCoords(
         layer: string,
-        z: number,
-        x: number,
-        y: number
+        lat: number,
+        lon: number,
+        zoom: number = 5
     ): string {
         if (!API_KEY) {
             throw new WeatherApiError(
                 "API key not found. Please add NEXT_PUBLIC_OPENWEATHER_API_KEY to your environment variables."
             );
         }
-        return `https://tile.openweathermap.org/map/${layer}/${z}/${x}/${y}.png?appid=${API_KEY}`;
+        const { x, y } = this.latLonToTile(lat, lon, zoom);
+        return `https://tile.openweathermap.org/map/${layer}/${zoom}/${x}/${y}.png?appid=${API_KEY}`;
     },
 
     /**

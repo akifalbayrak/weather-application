@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { WeatherData, ForecastData, AirPollutionData } from '../utils/weatherApi';
 import { weatherApi } from '../utils/weatherApi';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getAqiInfo } from '../utils/aqi';
 
 interface WeatherDisplayProps {
   weatherData: WeatherData;
@@ -17,6 +18,15 @@ interface WeatherDisplayProps {
 
 export default function WeatherDisplay({ weatherData, forecastData, airPollutionData, weatherMapUrl, recentSearches, onCityClick, onRemoveCity }: WeatherDisplayProps) {
   const { t } = useLanguage();
+
+  const getAqiColor = (aqi: number) => {
+    if (aqi === 1) return 'text-green-400';
+    if (aqi === 2) return 'text-yellow-400';
+    if (aqi === 3) return 'text-orange-400';
+    if (aqi === 4) return 'text-red-500';
+    if (aqi === 5) return 'text-purple-500';
+    return 'text-gray-400';
+  };
 
   return (
     <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -90,7 +100,6 @@ export default function WeatherDisplay({ weatherData, forecastData, airPollution
           <div className="flex justify-between">
             <span className="text-blue-100 text-base">{t.wind.speed}</span>
             <span className="text-white font-semibold text-base flex items-center gap-1">
-              <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 12.414a2 2 0 00-2.828 0l-4.243 4.243" /></svg>
               {weatherData.wind.speed} m/s
             </span>
           </div>
@@ -109,23 +118,29 @@ export default function WeatherDisplay({ weatherData, forecastData, airPollution
         </div>
       </div>
 
-      {/* Sun Times */}
-      <div className="bg-gradient-to-br from-blue-700/60 to-purple-800/60 rounded-2xl p-4 sm:p-6 border border-white/20 shadow flex flex-col gap-2">
-        <h3 className="text-lg sm:text-xl font-semibold text-white mb-4 flex items-center gap-2">
-          <svg className="w-5 h-5 text-yellow-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2" fill="currentColor" className="text-yellow-300" /></svg>
-          {t.sun.title}
-        </h3>
-        <div className="space-y-3">
-          <div className="flex justify-between">
-            <span className="text-blue-100 text-base">{t.sun.sunrise}</span>
-            <span className="text-white font-semibold text-base">{weatherApi.formatTime(weatherData.sys.sunrise)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-blue-100 text-base">{t.sun.sunset}</span>
-            <span className="text-white font-semibold text-base">{weatherApi.formatTime(weatherData.sys.sunset)}</span>
+      {/* Weather Map Section */}
+      {weatherMapUrl && (
+        <div className="bg-gradient-to-br from-blue-700/60 to-purple-800/60 rounded-2xl p-4 sm:p-6 border border-white/20 shadow flex flex-col gap-2">
+          <h3 className="text-lg sm:text-xl font-semibold text-white mb-4 flex items-center gap-2">
+            <svg className="w-5 h-5 text-blue-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <rect x="3" y="7" width="18" height="13" rx="2" fill="currentColor" className="text-blue-900" stroke="currentColor" strokeWidth="2" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 13l2.5 2.5L16 10" />
+            </svg>
+            {t.weatherMapTitle}
+          </h3>
+          <div className="w-full flex justify-center">
+            <Image
+              src={weatherMapUrl}
+              alt={t.weatherMapTitle}
+              className="rounded-xl border border-blue-400/30 shadow-md max-w-full h-auto bg-blue-950/30"
+              width={512}
+              height={256}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              style={{ objectFit: 'cover' }}
+            />
           </div>
         </div>
-      </div>
+      )}
 
       {/* Location Info */}
       <div className="bg-gradient-to-br from-blue-700/60 to-purple-800/60 rounded-2xl p-4 sm:p-6 border border-white/20 shadow flex flex-col gap-2">
@@ -146,6 +161,14 @@ export default function WeatherDisplay({ weatherData, forecastData, airPollution
             <span className="text-blue-100 text-base">{t.location.timezone}</span>
             <span className="text-white font-semibold text-base">UTC{weatherData.timezone >= 0 ? '+' : ''}{weatherData.timezone / 3600}</span>
           </div>
+          <div className="flex justify-between">
+            <span className="text-blue-100 text-base">{t.sun.sunrise}</span>
+            <span className="text-white font-semibold text-base">{weatherApi.formatTime(weatherData.sys.sunrise)}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-blue-100 text-base">{t.sun.sunset}</span>
+            <span className="text-white font-semibold text-base">{weatherApi.formatTime(weatherData.sys.sunset)}</span>
+          </div>
         </div>
       </div>
 
@@ -165,7 +188,7 @@ export default function WeatherDisplay({ weatherData, forecastData, airPollution
               <div key={index} className="flex items-center justify-between p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors">
                 <button
                   onClick={() => onCityClick(city)}
-                  className="text-white font-medium text-base truncate"
+                  className="text-white font-medium text-base truncate w-full"
                 >
                   {city}
                 </button>
@@ -187,7 +210,6 @@ export default function WeatherDisplay({ weatherData, forecastData, airPollution
           </div>
         )}
       </div>
-
 
       {/* Weather Forecast Section */}
       {forecastData && forecastData.list && (
@@ -248,73 +270,25 @@ export default function WeatherDisplay({ weatherData, forecastData, airPollution
             <svg className="w-7 h-7 text-green-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2" fill="currentColor" className="text-green-300" /><path strokeLinecap="round" strokeLinejoin="round" d="M2 12h2m16 0h2M12 2v2m0 16v2m4.24-13.66l-1.42 1.42M6.34 17.66l-1.42 1.42M17.66 17.66l-1.42-1.42M6.34 6.34L4.92 4.92" /></svg>
             {t.airPollutionTitle}
           </h3>
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-white text-base rounded-xl overflow-hidden">
-              <thead>
-                <tr className="bg-green-900/60">
-                  <th className="px-4 py-3 font-semibold text-left rounded-tl-xl">{t.forecastDateTime}</th>
-                  <th className="px-4 py-3 font-semibold text-left">AQI</th>
-                  <th className="px-4 py-3 font-semibold text-left">CO</th>
-                  <th className="px-4 py-3 font-semibold text-left">NO</th>
-                  <th className="px-4 py-3 font-semibold text-left">NO₂</th>
-                  <th className="px-4 py-3 font-semibold text-left">O₃</th>
-                  <th className="px-4 py-3 font-semibold text-left">SO₂</th>
-                  <th className="px-4 py-3 font-semibold text-left">PM2.5</th>
-                  <th className="px-4 py-3 font-semibold text-left">PM10</th>
-                  <th className="px-4 py-3 font-semibold text-left rounded-tr-xl">NH₃</th>
-                </tr>
-              </thead>
-              <tbody>
-                {airPollutionData.list.slice(0, 8).map((item: AirPollutionData['list'][number], idx: number) => (
-                  <tr key={idx} className="transition hover:bg-green-800/30 border-b border-white/10">
-                    <td className="px-4 py-3 whitespace-nowrap font-mono text-lg font-medium text-green-200">
-                      {weatherApi.formatTime(item.dt)}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-green-400/80 to-blue-500/80 text-white font-bold shadow">
-                        {item.main.aqi}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">{item.components.co}</td>
-                    <td className="px-4 py-3">{item.components.no}</td>
-                    <td className="px-4 py-3">{item.components.no2}</td>
-                    <td className="px-4 py-3">{item.components.o3}</td>
-                    <td className="px-4 py-3">{item.components.so2}</td>
-                    <td className="px-4 py-3">{item.components.pm2_5}</td>
-                    <td className="px-4 py-3">{item.components.pm10}</td>
-                    <td className="px-4 py-3">{item.components.nh3}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="space-y-4">
+            <div className="text-center">
+              <p className={`text-6xl font-bold ${getAqiColor(airPollutionData.list[0].main.aqi)}`}>
+                {t.airQuality[getAqiInfo(airPollutionData.list[0].main.aqi)?.name as keyof typeof t.airQuality] || 'Unknown'}
+              </p>
+              <p className="text-xl text-white">({t.aqi}: {airPollutionData.list[0].main.aqi})</p>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-white">
+              {Object.entries(airPollutionData.list[0].components).map(([key, value]) => (
+                <div key={key} className="bg-black/20 p-3 rounded-lg text-center">
+                  <p className="text-sm text-gray-300 uppercase">{key}</p>
+                  <p className="text-lg font-semibold">{value.toFixed(2)}</p>
+                  <p className="text-xs text-gray-400">μg/m³</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
-
-      {/* Weather Map Section */}
-      {weatherMapUrl && (
-        <div className="bg-gradient-to-br from-blue-700/60 to-purple-800/60 rounded-2xl p-4 sm:p-6 border border-white/20 shadow flex flex-col gap-4 mt-4">
-          <h3 className="text-lg sm:text-xl font-semibold text-white flex items-center gap-2">
-            <svg className="w-5 h-5 text-blue-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <rect x="3" y="7" width="18" height="13" rx="2" fill="currentColor" className="text-blue-900" stroke="currentColor" strokeWidth="2" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 13l2.5 2.5L16 10" />
-            </svg>
-            {t.weatherMapTitle}
-          </h3>
-          <div className="w-full flex justify-center">
-            <Image
-              src={weatherMapUrl}
-              alt={t.weatherMapTitle}
-              className="rounded-xl border border-blue-400/30 shadow-md max-w-full h-auto bg-blue-950/30"
-              width={512}
-              height={256}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              style={{ objectFit: 'cover' }}
-            />
-          </div>
-        </div>
-      )}
-
 
     </div>
   );

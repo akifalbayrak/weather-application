@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import WeatherDisplay from '@/app/components/WeatherDisplay';
 import SearchBar from '@/app/components/SearchBar';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
@@ -18,6 +18,7 @@ export default function Home() {
   const [lastSearchedLocation, setLastSearchedLocation] = useState<string>('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const { t, language, setLanguage, isLoading, setIsLoading } = useLanguage();
+  const initialLoadDone = useRef(false);
 
   // Function to add city to recent searches
   const addToRecentSearches = useCallback((cityName: string) => {
@@ -49,8 +50,8 @@ export default function Home() {
         weatherApi.getForecastByCoords(lat, lon, language),
         weatherApi.getAirPollutionForecast(lat, lon, language),
       ]);
-      // Use a fixed tile for demo (z=5, x=16, y=10)
-      const mapUrl = weatherApi.getWeatherMapTileUrl('clouds_new', 5, 16, 10);
+      // Generate dynamic map URL based on actual coordinates
+      const mapUrl = weatherApi.getWeatherMapTileUrlFromCoords('clouds_new', lat, lon, 5);
       setWeatherData(weather);
       setForecastData(forecast);
       setAirPollutionData(airPollution);
@@ -67,7 +68,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [language, addToRecentSearches, t.unexpectedError]);
+  }, [language, addToRecentSearches, t.unexpectedError, setIsLoading]);
 
   // Search by city name using getGeoByCity
   const getWeatherByCity = useCallback(async (cityName: string) => {
@@ -90,7 +91,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [language, fetchAllWeatherData, t.locationError, t.unexpectedError]);
+  }, [language, fetchAllWeatherData, t.locationError, t.unexpectedError, setIsLoading]);
 
   // Search by coordinates (e.g., from geolocation)
   const getWeatherByCoords = useCallback(async (lat: number, lon: number) => {
@@ -115,7 +116,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [language, fetchAllWeatherData, t.unexpectedError]);
+  }, [language, fetchAllWeatherData, t.unexpectedError, setIsLoading]);
 
   const getCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
@@ -133,7 +134,10 @@ export default function Home() {
   }, [getWeatherByCoords, t.locationError, t.geolocationError]);
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || initialLoadDone.current) return;
+    
+    initialLoadDone.current = true;
+    
     // Load last searched location from localStorage
     const savedLocation = localStorage.getItem('weather-app-last-location');
     const savedRecentSearches = localStorage.getItem('weather-app-recent-searches');
@@ -149,7 +153,7 @@ export default function Home() {
     } else {
       getWeatherByCity('London');
     }
-  }, [getWeatherByCity]);
+  }, [isLoading, getWeatherByCity]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-purple-600 p-6 sm:p-8">
