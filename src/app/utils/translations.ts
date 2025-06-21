@@ -38,6 +38,12 @@ export interface Translations {
     longitude: string;
     timezone: string;
   };
+  forecastTitle: string;
+  forecastDateTime: string;
+  forecastWeather: string;
+  airPollutionTitle: string;
+  aqi: string;
+  weatherMapTitle: string;
 }
 
 export const translations: Record<string, Translations> = {
@@ -81,6 +87,12 @@ export const translations: Record<string, Translations> = {
       longitude: 'Longitude',
       timezone: 'Timezone',
     },
+    forecastTitle: '5-Day Forecast',
+    forecastDateTime: 'Date/Time',
+    forecastWeather: 'Weather',
+    airPollutionTitle: 'Air Pollution Forecast',
+    aqi: 'AQI',
+    weatherMapTitle: 'Weather Map (Clouds)',
   },
   es: {
     appTitle: 'Aplicación del Clima',
@@ -122,6 +134,12 @@ export const translations: Record<string, Translations> = {
       longitude: 'Longitud',
       timezone: 'Zona Horaria',
     },
+    forecastTitle: '5-Day Forecast',
+    forecastDateTime: 'Date/Time',
+    forecastWeather: 'Weather',
+    airPollutionTitle: 'Air Pollution Forecast',
+    aqi: 'AQI',
+    weatherMapTitle: 'Weather Map (Clouds)',
   },
   fr: {
     appTitle: 'Application Météo',
@@ -163,6 +181,12 @@ export const translations: Record<string, Translations> = {
       longitude: 'Longitude',
       timezone: 'Fuseau Horaire',
     },
+    forecastTitle: 'Prévisions sur 5 jours',
+    forecastDateTime: 'Date/Heure',
+    forecastWeather: 'Météo',
+    airPollutionTitle: 'Prévision de la pollution de l\'air',
+    aqi: 'IQA',
+    weatherMapTitle: 'Carte météo (Nuages)',
   },
   de: {
     appTitle: 'Wetter-App',
@@ -204,6 +228,12 @@ export const translations: Record<string, Translations> = {
       longitude: 'Längengrad',
       timezone: 'Zeitzone',
     },
+    forecastTitle: '5-Tage-Vorhersage',
+    forecastDateTime: 'Datum/Uhrzeit',
+    forecastWeather: 'Wetter',
+    airPollutionTitle: 'Luftverschmutzungsvorhersage',
+    aqi: 'LQI',
+    weatherMapTitle: 'Wetterkarte (Wolken)',
   },
   it: {
     appTitle: 'App Meteo',
@@ -245,6 +275,12 @@ export const translations: Record<string, Translations> = {
       longitude: 'Longitudine',
       timezone: 'Fuso Orario',
     },
+    forecastTitle: 'Previsioni 5 giorni',
+    forecastDateTime: 'Data/Ora',
+    forecastWeather: 'Meteo',
+    airPollutionTitle: 'Previsione inquinamento aria',
+    aqi: 'IQAria',
+    weatherMapTitle: 'Mappa Meteo (Nuvole)',
   },
   pt: {
     appTitle: 'App do Clima',
@@ -286,6 +322,12 @@ export const translations: Record<string, Translations> = {
       longitude: 'Longitude',
       timezone: 'Fuso Horário',
     },
+    forecastTitle: 'Previsão de 5 dias',
+    forecastDateTime: 'Data/Hora',
+    forecastWeather: 'Tempo',
+    airPollutionTitle: 'Previsão de poluição do ar',
+    aqi: 'IQAr',
+    weatherMapTitle: 'Mapa do Tempo (Nuvens)',
   },
   ru: {
     appTitle: 'Приложение Погоды',
@@ -327,6 +369,12 @@ export const translations: Record<string, Translations> = {
       longitude: 'Долгота',
       timezone: 'Часовой Пояс',
     },
+    forecastTitle: 'Прогноз на 5 дней',
+    forecastDateTime: 'Дата/Время',
+    forecastWeather: 'Погода',
+    airPollutionTitle: 'Прогноз загрязнения воздуха',
+    aqi: 'ИЗА',
+    weatherMapTitle: 'Карта погоды (Облака)',
   },
   zh: {
     appTitle: '天气应用',
@@ -368,6 +416,12 @@ export const translations: Record<string, Translations> = {
       longitude: '经度',
       timezone: '时区',
     },
+    forecastTitle: '5天天气预报',
+    forecastDateTime: '日期/时间',
+    forecastWeather: '天气',
+    airPollutionTitle: '空气污染预报',
+    aqi: 'AQI',
+    weatherMapTitle: '天气图（云）',
   },
   ja: {
     appTitle: '天気アプリ',
@@ -409,6 +463,12 @@ export const translations: Record<string, Translations> = {
       longitude: '経度',
       timezone: 'タイムゾーン',
     },
+    forecastTitle: '5-Day Forecast',
+    forecastDateTime: 'Date/Time',
+    forecastWeather: 'Weather',
+    airPollutionTitle: 'Air Pollution Forecast',
+    aqi: 'AQI',
+    weatherMapTitle: 'Weather Map (Clouds)',
   },
   ko: {
     appTitle: '날씨 앱',
@@ -450,20 +510,26 @@ export const translations: Record<string, Translations> = {
       longitude: '경도',
       timezone: '시간대',
     },
+    forecastTitle: '5일 예보',
+    forecastDateTime: '날짜/시간',
+    forecastWeather: '날씨',
+    airPollutionTitle: '대기 오염 예보',
+    aqi: 'AQI',
+    weatherMapTitle: '날씨 지도 (구름)',
   },
   tr: {
     appTitle: 'Hava Durumu Uygulaması',
-    appSubtitle: 'Herhangi bir konum için gerçek zamanlı hava durumu bilgisi alın',
-    searchPlaceholder: 'Şehir adını girin...',
+    appSubtitle: 'Herhangi bir konum için anlık hava durumu bilgisi alın',
+    searchPlaceholder: 'Şehir adı girin...',
     searchButton: 'Ara',
     locationButton: 'Konumumu Kullan',
     loadingText: 'Hava durumu verileri yükleniyor...',
     errorTitle: 'Hata',
     locationError: 'Konumunuz alınamadı. Lütfen bir şehir arayın.',
-    geolocationError: 'Tarayıcınız konum hizmetini desteklemiyor.',
+    geolocationError: 'Tarayıcınız konum bilgisini desteklemiyor.',
     unexpectedError: 'Beklenmeyen bir hata oluştu',
-    lastSearched: 'Son arama',
-    recentSearches: 'Son arama',
+    lastSearched: 'Son aranan',
+    recentSearches: 'Son Aramalar',
     noRecentSearches: 'Son arama yok',
     temperature: {
       title: 'Sıcaklık',
@@ -478,12 +544,12 @@ export const translations: Record<string, Translations> = {
       speed: 'Rüzgar Hızı',
       direction: 'Rüzgar Yönü',
       visibility: 'Görüş',
-      cloudCover: 'Bulut Örtüsü',
+      cloudCover: 'Bulutluluk',
     },
     sun: {
       title: 'Güneş Zamanları',
-      sunrise: 'Gün Doğumu',
-      sunset: 'Gün Batımı',
+      sunrise: 'Gündoğumu',
+      sunset: 'Günbatımı',
     },
     location: {
       title: 'Konum',
@@ -491,6 +557,12 @@ export const translations: Record<string, Translations> = {
       longitude: 'Boylam',
       timezone: 'Saat Dilimi',
     },
+    forecastTitle: '5 Günlük Tahmin',
+    forecastDateTime: 'Tarih/Saat',
+    forecastWeather: 'Hava Durumu',
+    airPollutionTitle: 'Hava Kirliliği Tahmini',
+    aqi: 'HKİ',
+    weatherMapTitle: 'Hava Haritası (Bulutlar)',
   },
 };
 
