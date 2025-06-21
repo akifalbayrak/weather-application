@@ -253,7 +253,7 @@ export default function WeatherDisplay({ weatherData, forecastData, airPollution
               <thead>
                 <tr className="bg-green-900/60">
                   <th className="px-4 py-3 font-semibold text-left rounded-tl-xl">{t.forecastDateTime}</th>
-                  <th className="px-4 py-3 font-semibold text-left">{t.aqi}</th>
+                  <th className="px-4 py-3 font-semibold text-left">AQI</th>
                   <th className="px-4 py-3 font-semibold text-left">CO</th>
                   <th className="px-4 py-3 font-semibold text-left">NO</th>
                   <th className="px-4 py-3 font-semibold text-left">NO₂</th>

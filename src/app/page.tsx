@@ -14,11 +14,10 @@ export default function Home() {
   const [forecastData, setForecastData] = useState<ForecastData | null>(null);
   const [airPollutionData, setAirPollutionData] = useState<AirPollutionData | null>(null);
   const [weatherMapUrl, setWeatherMapUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastSearchedLocation, setLastSearchedLocation] = useState<string>('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  const { t, language, setLanguage } = useLanguage();
+  const { t, language, setLanguage, isLoading, setIsLoading } = useLanguage();
 
   // Function to add city to recent searches
   const addToRecentSearches = useCallback((cityName: string) => {
@@ -42,7 +41,7 @@ export default function Home() {
 
   // Helper to fetch all data for a given lat/lon
   const fetchAllWeatherData = useCallback(async (lat: number, lon: number, locationLabel: string) => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       const [weather, forecast, airPollution] = await Promise.all([
@@ -66,13 +65,13 @@ export default function Home() {
         setError(t.unexpectedError);
       }
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [language, addToRecentSearches, t.unexpectedError]);
 
   // Search by city name using getGeoByCity
   const getWeatherByCity = useCallback(async (cityName: string) => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       const geoResults = await weatherApi.getGeoByCity(cityName, language, 1);
@@ -89,13 +88,13 @@ export default function Home() {
         setError(t.unexpectedError);
       }
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [language, fetchAllWeatherData, t.locationError, t.unexpectedError]);
 
   // Search by coordinates (e.g., from geolocation)
   const getWeatherByCoords = useCallback(async (lat: number, lon: number) => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       // Use reverse geo to get city name
@@ -114,7 +113,7 @@ export default function Home() {
         setError(t.unexpectedError);
       }
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [language, fetchAllWeatherData, t.unexpectedError]);
 
@@ -134,6 +133,7 @@ export default function Home() {
   }, [getWeatherByCoords, t.locationError, t.geolocationError]);
 
   useEffect(() => {
+    if (isLoading) return;
     // Load last searched location from localStorage
     const savedLocation = localStorage.getItem('weather-app-last-location');
     const savedRecentSearches = localStorage.getItem('weather-app-recent-searches');
@@ -167,11 +167,11 @@ export default function Home() {
           <LanguageSelector currentLanguage={language} onLanguageChange={setLanguage} />
         </div>
         <SearchBar onSearch={getWeatherByCity} onLocationClick={getCurrentLocation} />
-        {loading && <LoadingSpinner />}
+        {isLoading && <LoadingSpinner />}
         {error && <ErrorMessage message={error} />}
-        {weatherData && !loading && (
-          <WeatherDisplay 
-            weatherData={weatherData} 
+        {weatherData && !isLoading && (
+          <WeatherDisplay
+            weatherData={weatherData}
             forecastData={forecastData}
             airPollutionData={airPollutionData}
             weatherMapUrl={weatherMapUrl}
