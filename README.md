@@ -4,7 +4,8 @@ A modern, feature-rich weather application built with Next.js, TypeScript, and T
 
 ![weather-application-eight-steel vercel app_](https://github.com/user-attachments/assets/5f9c47ca-2755-45f1-8fd2-26e36f717015)
 ![weather-application-eight-steel vercel app_ (1)](https://github.com/user-attachments/assets/9336c6cd-c3b1-4d31-919d-ff4963703b55)
-![weather-application-eight-steel vercel app_ (2)](https://github.com/user-attachments/assets/ef38f023-17c9-42ba-ac20-c0d6e1c60177)
+![weather-application-eight-steel vercel app_ (2)](https://github.com/user-attachments/assets/d5491f63-6146-4046-aeca-4f6ccd59be37)
+
 
 
 
