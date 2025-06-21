@@ -38,6 +38,19 @@ export interface Translations {
     longitude: string;
     timezone: string;
   };
+  forecastTitle: string;
+  forecastDateTime: string;
+  forecastWeather: string;
+  airPollutionTitle: string;
+  aqi: string;
+  weatherMapTitle: string;
+  airQuality: {
+    good: string;
+    fair: string;
+    moderate: string;
+    poor: string;
+    veryPoor: string;
+  };
 }
 
 export const translations: Record<string, Translations> = {
@@ -81,6 +94,19 @@ export const translations: Record<string, Translations> = {
       longitude: 'Longitude',
       timezone: 'Timezone',
     },
+    forecastTitle: '5-Day Forecast',
+    forecastDateTime: 'Date/Time',
+    forecastWeather: 'Weather',
+    airPollutionTitle: 'Air Pollution Forecast',
+    aqi: 'AQI',
+    weatherMapTitle: 'Weather Map',
+    airQuality: {
+      good: 'Good',
+      fair: 'Fair',
+      moderate: 'Moderate',
+      poor: 'Poor',
+      veryPoor: 'Very Poor',
+    },
   },
   es: {
     appTitle: 'Aplicación del Clima',
@@ -121,6 +147,19 @@ export const translations: Record<string, Translations> = {
       latitude: 'Latitud',
       longitude: 'Longitud',
       timezone: 'Zona Horaria',
+    },
+    forecastTitle: '5-Day Forecast',
+    forecastDateTime: 'Date/Time',
+    forecastWeather: 'Weather',
+    airPollutionTitle: 'Air Pollution Forecast',
+    aqi: 'AQI',
+    weatherMapTitle: 'Weather Map',
+    airQuality: {
+      good: 'Bueno',
+      fair: 'Regular',
+      moderate: 'Moderado',
+      poor: 'Pobre',
+      veryPoor: 'Muy Pobre',
     },
   },
   fr: {
@@ -163,6 +202,19 @@ export const translations: Record<string, Translations> = {
       longitude: 'Longitude',
       timezone: 'Fuseau Horaire',
     },
+    forecastTitle: 'Prévisions sur 5 jours',
+    forecastDateTime: 'Date/Heure',
+    forecastWeather: 'Météo',
+    airPollutionTitle: 'Prévision de la pollution de l\'air',
+    aqi: 'IQA',
+    weatherMapTitle: 'Carte météo',
+    airQuality: {
+      good: 'Bon',
+      fair: 'Passable',
+      moderate: 'Modéré',
+      poor: 'Pauvre',
+      veryPoor: 'Très Pauvre',
+    },
   },
   de: {
     appTitle: 'Wetter-App',
@@ -203,6 +255,19 @@ export const translations: Record<string, Translations> = {
       latitude: 'Breitengrad',
       longitude: 'Längengrad',
       timezone: 'Zeitzone',
+    },
+    forecastTitle: '5-Tage-Vorhersage',
+    forecastDateTime: 'Datum/Uhrzeit',
+    forecastWeather: 'Wetter',
+    airPollutionTitle: 'Luftverschmutzungsvorhersage',
+    aqi: 'LQI',
+    weatherMapTitle: 'Wetterkarte',
+    airQuality: {
+      good: 'Gut',
+      fair: 'Mäßig',
+      moderate: 'Mittel',
+      poor: 'Schlecht',
+      veryPoor: 'Sehr Schlecht',
     },
   },
   it: {
@@ -245,6 +310,19 @@ export const translations: Record<string, Translations> = {
       longitude: 'Longitudine',
       timezone: 'Fuso Orario',
     },
+    forecastTitle: 'Previsioni 5 giorni',
+    forecastDateTime: 'Data/Ora',
+    forecastWeather: 'Meteo',
+    airPollutionTitle: 'Previsioni sull\'inquinamento atmosferico',
+    aqi: 'IQA',
+    weatherMapTitle: 'Mappa meteorologica',
+    airQuality: {
+      good: 'Buono',
+      fair: 'Discreto',
+      moderate: 'Moderato',
+      poor: 'Povero',
+      veryPoor: 'Molto Povero',
+    },
   },
   pt: {
     appTitle: 'App do Clima',
@@ -285,6 +363,19 @@ export const translations: Record<string, Translations> = {
       latitude: 'Latitude',
       longitude: 'Longitude',
       timezone: 'Fuso Horário',
+    },
+    forecastTitle: 'Previsão de 5 dias',
+    forecastDateTime: 'Data/Hora',
+    forecastWeather: 'Tempo',
+    airPollutionTitle: 'Previsão de poluição do ar',
+    aqi: 'IQA',
+    weatherMapTitle: 'Mapa meteorológico',
+    airQuality: {
+      good: 'Bom',
+      fair: 'Razoável',
+      moderate: 'Moderado',
+      poor: 'Pobre',
+      veryPoor: 'Muito Pobre',
     },
   },
   ru: {
@@ -327,8 +418,21 @@ export const translations: Record<string, Translations> = {
       longitude: 'Долгота',
       timezone: 'Часовой Пояс',
     },
+    forecastTitle: 'Прогноз на 5 дней',
+    forecastDateTime: 'Дата/Время',
+    forecastWeather: 'Погода',
+    airPollutionTitle: 'Прогноз загрязнения воздуха',
+    aqi: 'ИКЗ',
+    weatherMapTitle: 'Карта погоды',
+    airQuality: {
+      good: 'Хорошее',
+      fair: 'Приемлемое',
+      moderate: 'Среднее',
+      poor: 'Плохое',
+      veryPoor: 'Очень плохое',
+    },
   },
-  zh: {
+  zh_cn: {
     appTitle: '天气应用',
     appSubtitle: '获取任何地点的实时天气信息',
     searchPlaceholder: '输入城市名称...',
@@ -367,6 +471,19 @@ export const translations: Record<string, Translations> = {
       latitude: '纬度',
       longitude: '经度',
       timezone: '时区',
+    },
+    forecastTitle: '5天天气预报',
+    forecastDateTime: '日期/时间',
+    forecastWeather: '天气',
+    airPollutionTitle: '空气污染预测',
+    aqi: '空气质量指数',
+    weatherMapTitle: '天气图',
+    airQuality: {
+      good: '优',
+      fair: '良',
+      moderate: '中度',
+      poor: '差',
+      veryPoor: '很差',
     },
   },
   ja: {
@@ -409,6 +526,19 @@ export const translations: Record<string, Translations> = {
       longitude: '経度',
       timezone: 'タイムゾーン',
     },
+    forecastTitle: '5-Day Forecast',
+    forecastDateTime: 'Date/Time',
+    forecastWeather: 'Weather',
+    airPollutionTitle: '大気汚染予測',
+    aqi: '大気質指数',
+    weatherMapTitle: '天気図',
+    airQuality: {
+      good: '良い',
+      fair: '普通',
+      moderate: '中程度',
+      poor: '悪い',
+      veryPoor: '非常に悪い',
+    },
   },
   ko: {
     appTitle: '날씨 앱',
@@ -450,20 +580,33 @@ export const translations: Record<string, Translations> = {
       longitude: '경도',
       timezone: '시간대',
     },
+    forecastTitle: '5일 예보',
+    forecastDateTime: '날짜/시간',
+    forecastWeather: '날씨',
+    airPollutionTitle: '대기 오염 예보',
+    aqi: 'AQI',
+    weatherMapTitle: '날씨 지도',
+    airQuality: {
+      good: '좋음',
+      fair: '보통',
+      moderate: '중간',
+      poor: '나쁨',
+      veryPoor: '매우 나쁨',
+    },
   },
   tr: {
     appTitle: 'Hava Durumu Uygulaması',
-    appSubtitle: 'Herhangi bir konum için gerçek zamanlı hava durumu bilgisi alın',
-    searchPlaceholder: 'Şehir adını girin...',
+    appSubtitle: 'Herhangi bir konum için anlık hava durumu bilgisi alın',
+    searchPlaceholder: 'Şehir adı girin...',
     searchButton: 'Ara',
     locationButton: 'Konumumu Kullan',
     loadingText: 'Hava durumu verileri yükleniyor...',
     errorTitle: 'Hata',
     locationError: 'Konumunuz alınamadı. Lütfen bir şehir arayın.',
-    geolocationError: 'Tarayıcınız konum hizmetini desteklemiyor.',
+    geolocationError: 'Tarayıcınız konum bilgisini desteklemiyor.',
     unexpectedError: 'Beklenmeyen bir hata oluştu',
-    lastSearched: 'Son arama',
-    recentSearches: 'Son arama',
+    lastSearched: 'Son aranan',
+    recentSearches: 'Son Aramalar',
     noRecentSearches: 'Son arama yok',
     temperature: {
       title: 'Sıcaklık',
@@ -478,18 +621,31 @@ export const translations: Record<string, Translations> = {
       speed: 'Rüzgar Hızı',
       direction: 'Rüzgar Yönü',
       visibility: 'Görüş',
-      cloudCover: 'Bulut Örtüsü',
+      cloudCover: 'Bulutluluk',
     },
     sun: {
       title: 'Güneş Zamanları',
-      sunrise: 'Gün Doğumu',
-      sunset: 'Gün Batımı',
+      sunrise: 'Gündoğumu',
+      sunset: 'Günbatımı',
     },
     location: {
       title: 'Konum',
       latitude: 'Enlem',
       longitude: 'Boylam',
       timezone: 'Saat Dilimi',
+    },
+    forecastTitle: '5 Günlük Tahmin',
+    forecastDateTime: 'Tarih/Saat',
+    forecastWeather: 'Hava Durumu',
+    airPollutionTitle: 'Hava Kirliliği Tahmini',
+    aqi: 'HKİ',
+    weatherMapTitle: 'Hava Haritası',
+    airQuality: {
+      good: 'İyi',
+      fair: 'Orta',
+      moderate: 'Orta',
+      poor: 'Kötü',
+      veryPoor: 'Çok Kötü',
     },
   },
 };

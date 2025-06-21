@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         hostname: 'openweathermap.org',
         pathname: '/img/wn/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'tile.openweathermap.org',
+        pathname: '/map/**',
+      },
     ],
   },
 };
