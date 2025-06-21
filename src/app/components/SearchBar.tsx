@@ -18,8 +18,14 @@ export default function SearchBar({ onSearch, onLocationClick }: SearchBarProps)
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const fromSuggestion = useRef(false);
 
   useEffect(() => {
+    if (fromSuggestion.current) {
+      fromSuggestion.current = false;
+      return;
+    }
+
     if (!cityName.trim()) {
       setSuggestions([]);
       setShowSuggestions(false);
@@ -70,6 +76,7 @@ export default function SearchBar({ onSearch, onLocationClick }: SearchBarProps)
   };
 
   const handleSuggestionClick = (suggestion: GeoCity) => {
+    fromSuggestion.current = true;
     const label = suggestion.name + (suggestion.state ? ', ' + suggestion.state : '') + ', ' + suggestion.country;
     setCityName(label);
     onSearch(label);
