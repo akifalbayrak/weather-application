@@ -21,7 +21,7 @@ interface WeatherDisplayProps {
   onRemoveCity: (cityName: string) => void;
 }
 
-export default function WeatherDisplay({ weatherData, forecastData, airPollutionData, weatherMapUrl, recentSearches, onCityClick, onRemoveCity }: WeatherDisplayProps) {
+export default function WeatherDisplay({ weatherData, forecastData, airPollutionData, recentSearches, onCityClick, onRemoveCity }: WeatherDisplayProps) {
   const { t } = useLanguage();
 
   const getAqiColor = (aqi: number) => {
