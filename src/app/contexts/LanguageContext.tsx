@@ -7,8 +7,6 @@ interface LanguageContextType {
   language: string;
   setLanguage: (language: string) => void;
   t: Translations;
-  isLoading: boolean;
-  setIsLoading: (isLoading: boolean) => void;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -19,7 +17,6 @@ interface LanguageProviderProps {
 
 export function LanguageProvider({ children }: LanguageProviderProps) {
   const [language, setLanguageState] = useState<string>('en');
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -28,7 +25,6 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
         setLanguageState(storedLang);
       }
     }
-    setIsLoading(false);
   }, []);
 
   const setLanguage = (newLanguage: string) => {
@@ -41,7 +37,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   const t = getTranslation(language);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, isLoading, setIsLoading }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );

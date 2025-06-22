@@ -3,10 +3,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import WeatherDisplay from '@/app/components/WeatherDisplay';
 import SearchBar from '@/app/components/SearchBar';
-import LoadingSpinner from '@/app/components/LoadingSpinner';
-import ErrorMessage from '@/app/components/ErrorMessage';
+import LoadingSpinner from './components/common/LoadingSpinner';
+import ErrorMessage from './components/common/ErrorMessage';
 import LanguageSelector from '@/app/components/LanguageSelector';
-import { weatherApi, WeatherApiError, ForecastData, AirPollutionData, WeatherData } from './utils/weatherApi';
+import { weatherApi } from './utils/weatherApi';
+import { WeatherApiError, ForecastData, AirPollutionData, WeatherData } from '../types/weather';
+import { getWeatherMapTileUrlFromCoords } from './utils/weatherUtils';
 import { useLanguage } from './contexts/LanguageContext';
 
 export default function Home() {
@@ -17,7 +19,8 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [lastSearchedLocation, setLastSearchedLocation] = useState<string>('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  const { t, language, setLanguage, isLoading, setIsLoading } = useLanguage();
+  const [isLoading, setIsLoading] = useState(false);
+  const { t, language, setLanguage } = useLanguage();
   const initialLoadDone = useRef(false);
 
   // Function to add city to recent searches
@@ -51,7 +54,7 @@ export default function Home() {
         weatherApi.getAirPollutionForecast(lat, lon, language),
       ]);
       // Generate dynamic map URL based on actual coordinates
-      const mapUrl = weatherApi.getWeatherMapTileUrlFromCoords('clouds_new', lat, lon, 5);
+      const mapUrl = getWeatherMapTileUrlFromCoords('clouds_new', lat, lon, 5);
       setWeatherData(weather);
       setForecastData(forecast);
       setAirPollutionData(airPollution);
@@ -170,7 +173,7 @@ export default function Home() {
           </div>
           <LanguageSelector currentLanguage={language} onLanguageChange={setLanguage} />
         </div>
-        <SearchBar onSearch={getWeatherByCity} onLocationClick={getCurrentLocation} />
+        <SearchBar onSearch={getWeatherByCity} onLocationClick={getCurrentLocation} isLoading={isLoading} setIsLoading={setIsLoading} t={t} language={language} />
         {isLoading && <LoadingSpinner />}
         {error && <ErrorMessage message={error} />}
         {weatherData && !isLoading && (
