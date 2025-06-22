@@ -45,7 +45,7 @@ export default function WeatherDisplay({ weatherData, forecastData, airPollution
       <WindInfo weatherData={weatherData} t={t} />
 
       {/* Weather Map Section */}
-      {weatherMapUrl && <WeatherMap weatherMapUrl={weatherMapUrl} t={t} />}
+      {weatherData && <WeatherMap weatherData={weatherData} t={t} />}
 
       {/* Location Info */}
       <LocationInfo weatherData={weatherData} t={t} />
