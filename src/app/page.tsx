@@ -20,7 +20,7 @@ export default function Home() {
   const [lastSearchedLocation, setLastSearchedLocation] = useState<string>('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { t, language, setLanguage } = useLanguage();
+  const { t, language, setLanguage, isLanguageLoaded } = useLanguage();
   const initialLoadDone = useRef(false);
 
   // Function to add city to recent searches
@@ -137,7 +137,8 @@ export default function Home() {
   }, [getWeatherByCoords, t.locationError, t.geolocationError]);
 
   useEffect(() => {
-    if (isLoading || initialLoadDone.current) return;
+    // Wait for language to be loaded from localStorage before making initial API call
+    if (!isLanguageLoaded || isLoading || initialLoadDone.current) return;
     
     initialLoadDone.current = true;
     
@@ -156,7 +157,14 @@ export default function Home() {
     } else {
       getWeatherByCity('London');
     }
-  }, [isLoading, getWeatherByCity]);
+  }, [isLanguageLoaded, isLoading, getWeatherByCity]);
+
+  useEffect(() => {
+    if (weatherData) {
+      // Re-fetch all weather data in the new language
+      fetchAllWeatherData(weatherData.coord.lat, weatherData.coord.lon, lastSearchedLocation);
+    }
+  }, [language]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-purple-600 p-6 sm:p-8">
