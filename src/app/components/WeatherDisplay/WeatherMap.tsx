@@ -26,7 +26,9 @@ export default function WeatherMap({ weatherData, t }: WeatherMapProps) {
         <div className="absolute right-6 top-6 flex gap-2 z-10">
           <button
             aria-label="Zoom out"
-            className="bg-white/20 hover:bg-white/40 text-white rounded-full w-6 h-6 flex items-center justify-center border border-white/30 shadow"
+            className={`bg-white/20 hover:bg-white/40 text-white rounded-full w-6 h-6 flex items-center justify-center border border-white/30 shadow transition-all ${
+              zoom === minZoom ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white/40'
+            }`}
             onClick={() => setZoom(z => Math.max(minZoom, z - 1))}
             disabled={zoom === minZoom}
             type="button"
@@ -35,7 +37,9 @@ export default function WeatherMap({ weatherData, t }: WeatherMapProps) {
           </button>
           <button
             aria-label="Zoom in"
-            className="bg-white/20 hover:bg-white/40 text-white rounded-full w-6 h-6 flex items-center justify-center border border-white/30 shadow"
+            className={`bg-white/20 hover:bg-white/40 text-white rounded-full w-6 h-6 flex items-center justify-center border border-white/30 shadow transition-all ${
+              zoom === maxZoom ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white/40'
+            }`}
             onClick={() => setZoom(z => Math.min(maxZoom, z + 1))}
             disabled={zoom === maxZoom}
             type="button"
