@@ -22,6 +22,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const { t, language, setLanguage, isLanguageLoaded } = useLanguage();
   const initialLoadDone = useRef(false);
+  const prevLanguageRef = useRef(language);
 
   // Function to add city to recent searches
   const addToRecentSearches = useCallback((cityName: string) => {
@@ -160,11 +161,14 @@ export default function Home() {
   }, [isLanguageLoaded, isLoading, getWeatherByCity]);
 
   useEffect(() => {
-    if (weatherData) {
-      // Re-fetch all weather data in the new language
+    if (
+      weatherData &&
+      prevLanguageRef.current !== language
+    ) {
       fetchAllWeatherData(weatherData.coord.lat, weatherData.coord.lon, lastSearchedLocation);
+      prevLanguageRef.current = language;
     }
-  }, [language]);
+  }, [language, weatherData, lastSearchedLocation, fetchAllWeatherData]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-purple-600 p-6 sm:p-8">
